@@ -1,4 +1,5 @@
 "use strict";
+const fs = require("fs");
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -12,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       models.User.hasMany(models.Publication, {
         foreignKey: "idUSERS",
         onDelete: "CASCADE",
+        hooks: true,
       });
 
       models.User.hasMany(models.Comment, {
@@ -32,7 +34,21 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "User",
+      hooks: {
+        afterDestroy: (User) => {
+          deleteUser(User);
+        },
+        afterBulkDestroy: (User) => {
+          deleteUser(User);
+        },
+      },
     }
   );
   return User;
 };
+function deleteUser(User) {
+  if (User.profilImg) {
+    const filename = User.profilImg.split("/images/")[1];
+    fs.unlink(`images/${filename}`, () => {});
+  }
+}

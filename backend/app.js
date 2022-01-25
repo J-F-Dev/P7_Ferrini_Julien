@@ -4,7 +4,12 @@ const express = require("express");
 const app = express();
 
 const userRoutes = require("./routes/user");
+
 const publicationRoutes = require("./routes/publication");
+
+const commentRoutes = require("./routes/comment");
+
+const likeRoutes = require("./routes/like");
 
 const path = require("path");
 
@@ -30,6 +35,7 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use("/api/user", userRoutes);
 app.use("/api/publications", publicationRoutes);
-
+app.use("/api/comment", commentRoutes);
+app.use("/api/like", likeRoutes);
 //on exporte l'application
 module.exports = app;

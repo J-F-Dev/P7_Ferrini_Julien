@@ -2,7 +2,10 @@
 node_modules
 /dist
 config.json
-
+HelloWorld.vue
+About.vue
+Home.vue
+images
 # local env files
 .env.local
 .env.*.local

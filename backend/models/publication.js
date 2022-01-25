@@ -1,4 +1,5 @@
 "use strict";
+const fs = require("fs");
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Publication extends Model {
@@ -38,7 +39,22 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Publication",
+
+      hooks: {
+        afterDestroy: (post) => {
+          deletePostFile(post);
+        },
+        afterBulkDestroy: (post) => {
+          deletePostFile(post);
+        },
+      },
     }
   );
   return Publication;
 };
+function deletePostFile(post) {
+  if (post.attachment) {
+    const filename = post.attachment.split("/images/")[1];
+    fs.unlink(`images/${filename}`, () => {});
+  }
+}

@@ -1,3 +1,4 @@
+require("dotenv").config();
 //On importe express
 const express = require("express");
 //On appelle la méthode express
